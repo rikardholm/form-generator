@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en" ng-app="activitiApp">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.min.css"/>
+    <title></title>
+    <script src="/js/angular.min.js"></script>
+    <script src="/app/controllers.js"></script>
+</head>
+<body class="starter-template">
+<div class="container">
+    <h1>Översikt</h1>
+
+    <h2>Processer</h2>
+
+    <div class="starter-template" ng-controller="ProcessController">
+        <ul>
+            <li ng-repeat="task in tasks">
+                <span class="lead">{{task.title}}</span>
+                <p>{{task.description}}</p>
+                <button ng-click="task.show=!task.show">Visa formulär</button>
+                <ul ng-show="task.show" ng-init="task.show=false">
+                    <li ng-repeat="field in task.fields" ng-include="templateUrlOf(field)"/>
+                    <li><button>Starta</button></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
