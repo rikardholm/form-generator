@@ -13,9 +13,7 @@
 </head>
 <body class="starter-template">
 <div class="container">
-    <h1>Översikt</h1>
-
-    <h2>Processer</h2>
+    <h1>Jobb</h1>
 
     <div class="starter-template" ng-controller="ProcessController">
         <ul>
@@ -25,7 +23,7 @@
                 <button ng-click="task.show=!task.show">Visa formulär</button>
                 <ul ng-show="task.show" ng-init="task.show=false">
                     <li ng-repeat="field in task.fields" ng-include="templateUrlOf(field)"/>
-                    <li><button>Starta</button></li>
+                    <li><button ng-click="post(task)">Starta</button></li>
                 </ul>
             </li>
         </ul>

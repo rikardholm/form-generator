@@ -1,1 +1,1 @@
-<label><span>{{field.label}}</span><input name="{{field.name}}" type="email" required/><span ng-if="field.required">*</span> {{field.description}}</label>
+<label><span>{{field.label}}</span><input name="{{field.name}}" type="email" ng-model="field.value" required/><span ng-if="field.required">*</span> {{field.description}} - {{field.value}}</label>

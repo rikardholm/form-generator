@@ -8,6 +8,10 @@ angular.module('activitiApp', [])
 
         });
 
+        $scope.post = function (task) {
+           alert(task.key);
+        };
+
         $scope.showForm = function (process) {
             $http.get('/processes/' + process.info.key + '/form')
                 .success(function (data) {
