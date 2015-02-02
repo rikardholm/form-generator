@@ -21,6 +21,7 @@ angular.module('activitiApp', [])
             var typeMap = {
                 'java.time.Year': 'number',
                 'java.time.LocalDate': 'date',
+                'java.time.YearMonth': 'month',
                 'javax.mail.internet.InternetAddress': 'email'
             };
 

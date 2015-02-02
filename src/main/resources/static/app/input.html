@@ -1,6 +1,8 @@
 <label><span>{{field.label}}</span>
     <span ng-switch on="field.inputType">
     <input ng-switch-when="date" name="{{field.name}}" type="date" ng-model="values[field.name]" ng-required="field.required"/>
+    <input ng-switch-when="month" name="{{field.name}}" type="month" ng-model="values[field.name]"
+           ng-required="field.required"/>
     <input ng-switch-when="email" name="{{field.name}}" type="email" ng-model="values[field.name]" ng-required="field.required"/>
     <input ng-switch-when="number" name="{{field.name}}" type="number" ng-model="values[field.name]" ng-required="field.required"/>
     <input ng-switch-default name="{{field.name}}" type="text" ng-model="values[field.name]" ng-required="field.required"/>

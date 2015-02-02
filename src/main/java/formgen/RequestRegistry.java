@@ -14,6 +14,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.YearMonth;
 import java.util.*;
 import java.util.function.Function;
 
@@ -22,6 +23,7 @@ import static java.util.Arrays.asList;
 public class RequestRegistry {
     private static final Map<Class<?>, Function<String, ?>> conversions = new HashMap<Class<?>, Function<String, ?>>() {{
         put(LocalDate.class, LocalDate::parse);
+        put(YearMonth.class, YearMonth::parse);
         put(Year.class, Year::parse);
         put(Personnummer.class, Personnummer::parse);
         put(InternetAddress.class, new Function<String, Object>() {
@@ -83,6 +85,10 @@ public class RequestRegistry {
                     title = fieldDescription.title();
                     description = fieldDescription.description();
                     required = fieldDescription.required();
+                }
+
+                if ("".equals(title)) {
+                    title = name;
                 }
 
                 List<Object> options = new ArrayList<>();
