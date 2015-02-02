@@ -16,7 +16,4 @@ public @interface FieldDescription {
 
     boolean required() default true;
 
-    Class<?> listOf() default void.class;
-
-    String[] options() default {};
 }

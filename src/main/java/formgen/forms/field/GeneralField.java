@@ -2,7 +2,6 @@ package formgen.forms.field;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -13,9 +12,9 @@ public class GeneralField implements Field {
     private final boolean required;
     private final Class<?> type;
     private final Function<String, ?> convert;
-    private final Set<Object> options;
+    private final List<Object> options;
 
-    public GeneralField(Class<?> type, String name, String label, String description, boolean required, Function<String, ?> convert, Set<Object> options) {
+    public GeneralField(Class<?> type, String name, String label, String description, boolean required, Function<String, ?> convert, List<Object> options) {
         this.type = type;
         this.name = name;
         this.label = label;
@@ -63,7 +62,7 @@ public class GeneralField implements Field {
         return convert.apply(string);
     }
 
-    public Set<Object> getOptions() {
+    public List<Object> getOptions() {
         return options;
     }
 }

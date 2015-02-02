@@ -15,6 +15,9 @@ angular.module('activitiApp', [])
         };
 
         $scope.templateUrlOf = function (field) {
+            if (field.options.length > 0) {
+                return 'app/select.html';
+            }
             return 'app/input.html';
         };
 

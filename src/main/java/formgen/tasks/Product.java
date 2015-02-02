@@ -1,5 +1,5 @@
 package formgen.tasks;
 
 public enum Product {
-    REGULAR, PREMIUM, COMPANY
+    ALLA, VANLIGA, PREMIUM, FÖRETAG
 }

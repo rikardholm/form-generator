@@ -7,9 +7,6 @@ import formgen.tasks.Product;
 
 import javax.mail.internet.InternetAddress;
 import java.time.Year;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
 
 @RequestDescription(
         title = "Värdebesked",
@@ -18,22 +15,22 @@ import java.util.Set;
 public class ValueStatementRequest implements Request {
     private final Year year;
     private final InternetAddress email;
-    private final Set<Product> products;
+    private final Product product;
 
     public ValueStatementRequest(@FieldDescription(name = "year", title = "År", description = "Vilket år som ska användas i uträkningen.") Year year,
-                                 @FieldDescription(name = "products", title = "Produkter", description = "Produkter som ska inkluderas i denna körning", listOf = Product.class) List<Product> products,
+                                 @FieldDescription(name = "product", title = "Produkter", description = "Produkter som ska inkluderas i denna körning") Product product,
                                  @FieldDescription(name = "email", title = "Epost", description = "Var ska resultatet mailas") InternetAddress email) {
         this.year = year;
         this.email = email;
-        this.products = EnumSet.copyOf(products);
+        this.product = product;
     }
 
     public Year getYear() {
         return year;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public Product getProduct() {
+        return product;
     }
 
     public InternetAddress getEmail() {

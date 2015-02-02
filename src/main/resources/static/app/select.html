@@ -1,0 +1,5 @@
+<label>
+{{field.label}}
+<select name="{{field.key}}" ng-model="field.value" ng-options="item for item in field.options" ng-required="field.required" ng-init="field.options[0]">
+</select> {{field.description}} - {{field.value}}
+</label>

@@ -14,6 +14,8 @@ import java.time.Year;
 import java.util.*;
 import java.util.function.Function;
 
+import static java.util.Arrays.asList;
+
 public class RequestRegistry {
     private static final Map<Class<?>, Function<String, ?>> conversions = new HashMap<Class<?>, Function<String, ?>>() {{
         put(LocalDate.class, LocalDate::parse);
@@ -70,7 +72,12 @@ public class RequestRegistry {
                     required = fieldDescription.required();
                 }
 
-                Set<Object> options = new HashSet<>();
+                List<Object> options = new ArrayList<>();
+
+                if (Enum.class.isAssignableFrom(parameter.getType())) {
+                    Object[] enumConstants = parameter.getType().getEnumConstants();
+                    options = asList(enumConstants);
+                }
 
 
                 Field field = new GeneralField(parameter.getType(), name, title, description, required, conversions.get(parameter.getType()), options);
@@ -79,9 +86,5 @@ public class RequestRegistry {
             }
         }
         return requestDescription;
-    }
-
-    public <T extends Enum<T>> Set allOf(Class<T> type) {
-        return EnumSet.allOf(type);
     }
 }
