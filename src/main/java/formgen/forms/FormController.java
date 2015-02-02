@@ -5,12 +5,8 @@ import formgen.api.Request;
 import formgen.forms.field.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -29,7 +25,7 @@ public class FormController {
 
     @RequestMapping("/start/{key}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void start(@PathVariable String key, HttpServletRequest httpServletRequest) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public void start(@PathVariable String key, @RequestBody Map<String,Object> requestBody) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         RequestView requestDescription = requestRegistry.getByKey(key);
 
         Class<?>[] types = new Class<?>[requestDescription.getFields().size()];
@@ -39,22 +35,20 @@ public class FormController {
             i++;
         }
 
-        Map<String, String[]> parameterMap = httpServletRequest.getParameterMap();
-
         Constructor<? extends Request> constructor = requestDescription.getType().getConstructor(types);
 
         Object[] args = new Object[requestDescription.getFields().size()];
         i = 0;
         for (Field field : requestDescription.getFields()) {
-            String[] values = parameterMap.get(field.getName());
+            Object value = requestBody.get(field.getName());
 
-            if (values == null) {
+            if (value == null) {
                 if (field.getRequired()) {
                     throw new NullPointerException("Field " + field.getName() + " is required.");
                 }
                 args[i] = null;
             } else {
-                args[i] = field.fromString(values[0]);
+                args[i] = field.fromString((String) value);
             }
             i++;
         }

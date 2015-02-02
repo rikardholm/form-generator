@@ -19,13 +19,21 @@
         <ul>
             <li ng-repeat="task in tasks">
                 <span class="lead">{{task.title}}</span>
+
                 <p>{{task.description}}</p>
-                <button ng-click="task.show=!task.show">Visa formulär</button>
-                <ul ng-show="task.show" ng-init="task.show=false">
-                    <li ng-repeat="field in task.fields" ng-include="templateUrlOf(field)"/>
-                    <li><button ng-click="post(task)">Starta</button></li>
-                </ul>
+                <button ng-click="show=!show" ng-init="show=false">Visa formulär</button>
+                <form name="taskForm" ng-submit="post(task, values)" ng-controller="FormController" ng-show="show" ng-init="values={}">
+                    <ul>
+                        <li ng-repeat="field in task.fields" ng-include="templateUrlOf(field)"/>
+                        <li>
+                            <button type="submit">Starta</button>
+                        </li>
+                        <li><pre>{{values | json}}</pre></li>
+                        <!-- <li><pre>{{taskForm | json}}</pre></li> -->
+                    </ul>
+                </form>
             </li>
+
         </ul>
     </div>
 </div>

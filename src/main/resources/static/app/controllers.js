@@ -10,10 +10,6 @@ angular.module('activitiApp', [])
 
         });
 
-        $scope.post = function (task) {
-            alert(task.key);
-        };
-
         $scope.templateUrlOf = function (field) {
             if (field.options.length > 0) {
                 return 'app/select.html';
@@ -28,12 +24,14 @@ angular.module('activitiApp', [])
                 'javax.mail.internet.InternetAddress': 'email'
             };
 
-            console.log(field.name);
-
             field.inputType = 'text';
             if (typeMap.hasOwnProperty(field.type)) {
                 field.inputType = typeMap[field.type];
             }
+        };
+    }).controller('FormController', function ($scope, $http) {
+        $scope.post = function (task, values) {
+            $http.post('/start/' + task.key, values);
         };
     }).service('TaskService', function ($http) {
 
