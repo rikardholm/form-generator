@@ -1,27 +1,37 @@
 angular.module('activitiApp', [])
-    .controller('ProcessController', function ($scope, $http) {
+    .controller('TaskController', function ($scope, $http) {
         $http.get('/descriptions').success(function (data) {
             $scope.tasks = [];
             data.forEach(function (processInfo) {
                 $scope.tasks.push(processInfo);
+
+                processInfo.fields.forEach(enrich);
             });
 
         });
 
         $scope.post = function (task) {
-           alert(task.key);
-        };
-
-        $scope.showForm = function (process) {
-            $http.get('/processes/' + process.info.key + '/form')
-                .success(function (data) {
-                    process.form = data;
-                });
+            alert(task.key);
         };
 
         $scope.templateUrlOf = function (field) {
-            return 'app/' + field.type + '.html';
+            return 'app/input.html';
         };
-    }).service('ProcessService', function ($http) {
+
+        var enrich = function (field) {
+            var typeMap = {
+                'java.time.Year': 'number',
+                'java.time.LocalDate': 'date',
+                'javax.mail.internet.InternetAddress': 'email'
+            };
+
+            console.log(field.name);
+
+            field.inputType = 'text';
+            if (typeMap.hasOwnProperty(field.type)) {
+                field.inputType = typeMap[field.type];
+            }
+        };
+    }).service('TaskService', function ($http) {
 
     });
