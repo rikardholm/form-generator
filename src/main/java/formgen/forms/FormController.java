@@ -48,7 +48,7 @@ public class FormController {
                 }
                 args[i] = null;
             } else {
-                args[i] = field.fromString((String) value);
+                args[i] = field.fromString(value.toString());
             }
             i++;
         }

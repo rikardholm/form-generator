@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 public class GeneralField implements Field {
     private final String name;
     private final String label;
@@ -15,13 +17,13 @@ public class GeneralField implements Field {
     private final List<Object> options;
 
     public GeneralField(Class<?> type, String name, String label, String description, boolean required, Function<String, ?> convert, List<Object> options) {
-        this.type = type;
-        this.name = name;
-        this.label = label;
-        this.description = description;
-        this.required = required;
-        this.convert = convert;
-        this.options = options;
+        this.type = requireNonNull(type);
+        this.name = requireNonNull(name);
+        this.label = requireNonNull(label);
+        this.description = requireNonNull(description);
+        this.required = requireNonNull(required);
+        this.convert = requireNonNull(convert);
+        this.options = requireNonNull(options);
     }
 
     @Override

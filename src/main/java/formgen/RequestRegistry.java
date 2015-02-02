@@ -4,9 +4,12 @@ import formgen.api.FieldDescription;
 import formgen.api.Request;
 import formgen.api.RequestDescription;
 import formgen.forms.RequestView;
-import formgen.forms.field.*;
+import formgen.forms.field.Field;
+import formgen.forms.field.GeneralField;
 import formgen.tasks.Personnummer;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.time.LocalDate;
@@ -21,6 +24,16 @@ public class RequestRegistry {
         put(LocalDate.class, LocalDate::parse);
         put(Year.class, Year::parse);
         put(Personnummer.class, Personnummer::parse);
+        put(InternetAddress.class, new Function<String, Object>() {
+            @Override
+            public Object apply(String s) {
+                try {
+                    return new InternetAddress(s);
+                } catch (AddressException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
     }};
     private final List<Class<? extends Request>> requestTypes;
     public List<RequestView> requestDescriptions;
@@ -74,13 +87,16 @@ public class RequestRegistry {
 
                 List<Object> options = new ArrayList<>();
 
-                if (Enum.class.isAssignableFrom(parameter.getType())) {
-                    Object[] enumConstants = parameter.getType().getEnumConstants();
+                Class<?> parameterType = parameter.getType();
+                Function<String, ?> convert = conversions.get(parameterType);
+
+                if (Enum.class.isAssignableFrom(parameterType)) {
+                    Object[] enumConstants = parameterType.getEnumConstants();
                     options = asList(enumConstants);
+                    convert = string -> Enum.valueOf((Class<Enum>) parameterType, string);
                 }
 
-
-                Field field = new GeneralField(parameter.getType(), name, title, description, required, conversions.get(parameter.getType()), options);
+                Field field = new GeneralField(parameterType, name, title, description, required, convert, options);
 
                 requestDescription.addField(field);
             }
