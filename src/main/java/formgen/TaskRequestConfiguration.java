@@ -1,26 +1,25 @@
 package formgen;
 
-import formgen.api.Factory;
 import formgen.api.Request;
-import org.springframework.beans.factory.annotation.Autowired;
+import formgen.tasks.reports.valuestatement.ValueStatementRequest;
+import formgen.tasks.tax.FirstDepositRequest;
+import formgen.tasks.tax.PayTaxesRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 public class TaskRequestConfiguration {
-    @Autowired
-    private List<Factory<?, ?>> factories;
+    public static final List<Class<? extends Request>> REQUEST_TYPES = Arrays.asList(
+            ValueStatementRequest.class,
+            PayTaxesRequest.class,
+            FirstDepositRequest.class);
 
     @Bean(initMethod = "init")
     public RequestRegistry requestRegistry() {
-        ArrayList<Class<? extends Request>> requestTypes = new ArrayList<>();
-        for (Factory<?, ?> factory : factories) {
-            requestTypes.add(factory.requestType());
-        }
 
-        return new RequestRegistry(requestTypes);
+        return new RequestRegistry(REQUEST_TYPES);
     }
 }
